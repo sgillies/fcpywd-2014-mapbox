@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
 
-        <title>Rasterio</title>
+        <title>Python @Mapbox</title>
 
         <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
         <meta name="author" content="Hakim El Hattab">
@@ -46,43 +46,236 @@
       data-background="img/rgba30.png" 
       data-background-size="1000px">
 
-        <h1>Rasterio</h1>
-        <h2>Geospatial Raster Data Access for Programmers
-        and Future Programmers</h2>
-        <p>Sean Gillies @Mapbox</p>
-        <p><small>SciPy 2014 &#8729; Austin &#8729; July 9</small></p>
+        <h1>Python at Mapbox</h1>
+        <p>Sean Gillies</p>
+        <p><small>Fort Collins Python Web Development Meetup&#8729;July 14, 2014</small></p>
 
     <aside class="notes">
-    Hi! Good morning! Thank you very much for coming to this sessiom. My name
-    is Sean Gillies, I work at Mapbox. 
-    I've been a Python programmer since 2001 and a GIS analyst and programmer
-    since 1999, with a séjour in the digital classics from 2006 to 2013.
-    This is my first SciPy and I'm super happy to be here. 
+    Hi! Good evening! Thank you very much for coming out to the Meetup.
+    My name
+    is Sean Gillies, I work at Mapbox.
+
+    I've been in the GIS business since 1999 and I've been a Python programmer
+    since 2001.
     </aside>
 
     </section>
 
+    <section
+      data-background="img/3PmjkxZ.gif"
+      data-background-size="1024px">
+
+    <aside class="notes">
+    Mapbox is a platform for creating and using maps. That means that it’s
+    a collection of tools and services that connect together in different ways:
+    you can draw a map on the website, use it on an iPhone, and get raw data
+    from an API.
+
+    We quite frankly want to win over the users of the Google Maps platform.
+
+    This evening I'm going to cover:
+
+    - How Mapbox works
+    - How Mapbox employees work
+    - What the satellite team is up to
+    - How we're using Python
+
+    So, starting with a look at the products and the company, I'm going to
+    bend back towards Python :)
+    </aside>
+    </section>
+
     <section>
-    <!-- What I'm going to tell you -->
-    <h2>Programming with Raster data</h2>
+    <h2>How Mapbox works</h2>
     <ul>
-      <li class="fragment">What's the Mapbox Satellite team up to?</li>
-      <li class="fragment">Why Linux, GDAL, and SciPy?</li>
-      <li class="fragment">Why a new Python geospatial data library?</li>
-      <li class="fragment">What is Rasterio and how do you use it?</li>
+      <li class="fragment">Making maps</li>
+      <li class="fragment">Map data</li>
+      <li class="fragment">Using maps</li>
+    </ul>
+    </section>
+
+    <section>
+    <h2>Making maps: overlays</h2>
+    <img src="img/drawing-polygon.png">
+
+    <aside class="notes">
+Fundamentally, maps are made up of overlays and baselayers. Overlays are additional data added on top of a map for some particular purpose. An overlay might be a marker with your business location, or something complex like earthquake visualizations. These sit on top of the baselayer - a combination of streets, countries, and terrain or satellite data that give people a basic sense of place.
+    </aside>
+    </section>
+
+    <section>
+    <h2>Making maps: baselayers</h2>
+    <img src="img/all_layers.jpg">
+
+    <aside class="notes">
+The easiest way to make a map is with the Mapbox.com editor. You can customize parameters of the baselayer - choosing satellite or terrain, adjusting road or area colors, or changing the language of labels. It also provides a simple interface to draw, style, and import features like markers, lines, and areas.
+
+The Mapbox.com editor is great for getting started fast, and has some superpowers over any other way of making maps. With it, you can tweak the baselayer, and instantly, everywhere in the world acquires a new look, on the fly. But sometimes you want more control, or to add more data, and for that, there’s TileMill.
+</aside>
+    </section>
+
+    <section>
+    <h2>Making maps: tilemill</h2>
+    <img width="640" src="img/project.png">
+    <aside class="notes">
+TileMill is a free desktop application that can import and style data to your heart’s content. It can help you create everything from heatmaps to 3D buildings and custom terrain. You can even export the features you drew on Mapbox.com and import them into TileMill for more styling power. And while the Mapbox.com editor tops out at 2,000 features and might get slow with complex geometries, TileMill stays super fast.
+
+Generating big maps in TileMill? You might want to check out our upgraded plans for more storage space.
+The TileMill approach is not without limitations - unlike the Mapbox.com editor, you can’t instantly style a map of the world. If you’re dealing with a large geographical area and high zoom levels, it can take a while to render and will result in big files.
+
+So TileMill is a desktop application - how does it connect to Mapbox? Well, we’ve made it so that it’s easy to upload straight from TileMill to Mapbox and integrate your TileMill maps with your Mapbox.com projects.
+    </aside>
+    </section>
+
+    <section>
+    <h2>Mapbox map data</h2>
+    <ul>
+      <li>Streets: OpenStreetMap</li>
+      <li>Imagery: DigitalGlobe and other providers</li>
+      <li>Common to all customers</li>
     </ul>
 
     <aside class="notes">
-    My talk is organized around four questions.
-
-    What's the problem?
-
-    What's the approach?
-
-    Why are we writing new geodata access libraries?
-
-    How do you use it yourselves?
+Let’s look at Mapbox’s data first. The baselayer that you customize in Mapbox.com comes from a variety of sources: the road network comes from OpenStreetMap, while satellite and terrain data are derived from DigitalGlobe and other image providers. We carefully choose and curate our sources to make sure that everything from country borders to the Sahara is accurate.
     </aside>
+    </section>
+
+    <section>
+    <img src="img/tCDSKJX.gif">
+
+    <aside class="notes">
+This week, the data team finished adding buildings in San Francisco to OpenStreetMap. Since January, we have added or updated over 152,022 building polygons based on San Francisco building footprint data and Bing imagery.
+
+The biggest difference between Google Maps and Mapbox isn't size. It's that
+Mapbox uses and gives back to OSM.
+
+We're big contributors to OSM.
+
+Edits made to OSM show up in Mapbox data in less than 10 minutes.
+    </aside>
+    </section>
+
+    <section>
+    <h2>Added map data</h2>
+    <img src="img/markers-3.gif">
+
+    <aside class="notes">
+Next, there’s data you add in Mapbox.com or stylize in TileMill. This can be any compatible source you choose - and there are several compatible formats for TileMill as well as for the editor. This should be data that you own or have a right to use. We make sure that you can always download it - either by exporting it from the web interface or keeping it on your local computer.
+    </aside>
+    </section>
+
+    <section>
+    <h2>Local map data</h2>
+    <ul>
+      <li>Not uploaded to Mapbox</li>
+      <li>Combined with maps in realtime</li>
+      <li>Using API or SDK</li>
+    </ul>
+    <aside class="notes">
+There’s a third kind of data: local data. Local data can be combined with your maps in realtime, thanks to the power of our SDKs. This can be anything from dynamic database results to files that users upload. Unlike other kinds of data, this never has to touch Mapbox’s servers because it’s combined with the map in realtime. A good example of this kind of integration is Foursquare, a company that uses Mapbox’s custom maps and overlays their own custom data with custom software.
+    </aside>
+    </section>
+
+    <section>
+    <h2>Using maps on the web</h2>
+    <img src="img/firstmap-sharelink.png">
+    <aside class="notes">
+The simplest way of sharing a map is just sending a link: this directs someone to Mapbox.com where they can look at your map through a nice little interface. Additionally, you can use embeds, which let you add a map within your existing content, like you would add an image to a blog post.
+    </aside>
+    </section>
+
+    <section>
+    <h2>JS, you say?</h2>
+    <p>Mapbox.js is a great plugin for Leaflet.</p>
+    <aside class="notes">
+    And there are a bunch of related plugins for loading and mapping
+    all kinds of files: CSV, KML, GPX.
+    
+    BTW, Leaflet's author works at Mapbox.
+    </aside>
+    </section>
+
+    <section>
+    <h2>Using maps on mobile</h2>
+    <img style="border: none" src="img/mobile.png">
+    <aside class="notes">
+Native devices call for their own code: so there’s the Mapbox iOS SDK on iOS, MBXMapKit for iOS 7+, and the Mapbox Android SDK for any flavor of Android, including AOSP. Just like Mapbox.js, we build all of these tools as free and open source projects: you can customize them, peek inside, and try them out.
+
+Regardless of how you access Mapbox, whether through an SDK, embeds, or using the core API, you’re building on the Mapbox cloud service, so your custom maps will be available and pixel-perfect.
+    </aside>
+    </section>
+
+    <section>
+    <img src="img/8466078950_a66740cb32_k.jpg">
+    <aside class="notes">
+    I'm now going to explain how we work at Mapbox.
+
+    It's like a lot of other offices: pizza, cola, and satellite launches.
+
+    That's Landsat 8.
+
+    From the Washington DC office. We also have an office in SF.
+    </aside>
+    </section>
+
+    <section>
+      <h2>Distributed is how we work</h2>
+      <ul>
+        <li>30 in Washington, DC</li>
+        <li>15 in San Francisco</li>
+        <li>12 remote: US, Canada, Europe, South America</li>
+      </ul>
+
+    <aside class="notes">
+    Including Fort Collins and, very recently, Boulder. 
+
+    Mapbox's funders, The Foundry Group, are in Boulder, too.
+    </aside>
+    </section>
+
+    <section>
+      <h2>Distributed is really how we work</h2>
+      <ul>
+        <li>GitHub for everything</li>
+        <li class="fragment">for code</li>
+        <li class="fragment">for supplies</li>
+        <li class="fragment">for travel planning</li>
+        <li class="fragment">for business strategy</li>
+      </ul>
+
+    <aside class="notes">
+    It feels a lot like working on a bunch of open source projects.
+
+    Everybody has at least a couple job descriptions and we rotate around.
+
+    Now, flat and open isn't a panacea. In fact, it can be a recipe for abuse
+    if you're hiring people purely on their ambition and tech pedigrees. So
+    we try not to be irrationally enthusiastic about lack of managers and
+    mertitocracy.
+
+    We're also trying to equalize the gender ratio at Mapbox. Being a woman
+    in tech should be normal, we think.
+    </aside>
+    </section>
+
+    <section>
+      <img src="img/14606867651_49cfefde0e_b.jpg">
+      <aside class="notes">
+      We do lots of social stuff, too.
+
+      We host meetups, hackathons, mapping parties, 
+      sponsor local women's orgs.
+
+      We totally enjoy this.
+      </aside>
+    </section>
+
+    <section>
+      <img src="img/14467410326_966200aa48_k.jpg">
+      <aside class="notes">
+      Trolling the establishment is also a small part of what we do at
+      Mapbox.
+      </aside>
     </section>
 
     <!-- Cloudless Gibralter -->
